@@ -16,5 +16,28 @@ import { createModal } from "./CreateModal.js";
 export const createGrid = () => {
   const container = document.getElementById("podcast-grid");
 
+/**
+   * Renders a list of podcast objects into the grid container.
+   * @param {object[]} podcastList An array of podcast objects to be rendered.
+   */
+  const render = (podcastList) => {
+    // Clear the grid to prevent duplicate content
+    container.innerHTML = "";
 
-}
+    // Loop through the podcast list and render each card
+    podcastList.forEach((podcast) => {
+      // Create a card using our factory function
+      // The `createModal().open` is passed as the onClick handler,
+      // creating a direct link between the card click and modal functionality.
+      const card = createPodcastCard(podcast, createModal().open);
+
+      // Append the new card to the grid
+      container.appendChild(card);
+    });
+  };
+
+  // Return the public interface
+  return {
+    render,
+  };
+};
