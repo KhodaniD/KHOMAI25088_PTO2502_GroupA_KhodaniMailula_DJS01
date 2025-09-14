@@ -32,14 +32,14 @@ export const createModal = () => {
     // Find the full seasons data for the given podcast ID
     const podcastSeasons = seasons.find((s) => s.id === podcast.id);
 
-    // 1. Populate the modal with main podcast data
+    // Populate the modal with main podcast data
     modalTitle.textContent = podcast.title;
     modalImage.src = podcast.image;
     modalImage.alt = podcast.title;
     modalDescription.textContent = podcast.description;
     modalUpdated.textContent = `Last updated: ${DateUtils.format(podcast.updated)}`;
 
-    // 2. Populate genre tags
+    // Populate genre tags
     modalGenres.innerHTML = "";
     const genres = GenreService.getNames(podcast.genres);
     genres.forEach((genre) => {
@@ -49,7 +49,7 @@ export const createModal = () => {
       modalGenres.appendChild(span);
     });
 
-    // 3. Populate the seasons list
+    // Populate the seasons list
     modalSeasonsList.innerHTML = "";
     if (podcastSeasons && podcastSeasons.seasonDetails) {
       podcastSeasons.seasonDetails.forEach((season) => {
@@ -62,5 +62,24 @@ export const createModal = () => {
         modalSeasonsList.appendChild(li);
       });
     }
+// Make the modal visible
+    modal.classList.remove("hidden");
+  };
 
+  /**
+   * Hides the modal.
+   */
+  const close = () => {
+    modal.classList.add("hidden");
+  };
+
+  // Add event listener to the close button
+  closeBtn.addEventListener("click", close);
+
+  // Return the public interface
+  return {
+    open,
+    close,
+  };
+};
   
