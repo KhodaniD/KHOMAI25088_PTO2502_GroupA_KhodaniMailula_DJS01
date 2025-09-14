@@ -24,6 +24,43 @@ export const createModal = () => {
   const modalUpdated = document.getElementById("modal-updated");
   const modalSeasonsList = document.getElementById("modal-seasons-list");
 
-  
+  /**
+   * Populates the modal with the details of a specific podcast.
+   * @param {object} podcast The podcast object to display.
+   */
+  const open = (podcast) => {
+    // Find the full seasons data for the given podcast ID
+    const podcastSeasons = seasons.find((s) => s.id === podcast.id);
 
-}
+    // 1. Populate the modal with main podcast data
+    modalTitle.textContent = podcast.title;
+    modalImage.src = podcast.image;
+    modalImage.alt = podcast.title;
+    modalDescription.textContent = podcast.description;
+    modalUpdated.textContent = `Last updated: ${DateUtils.format(podcast.updated)}`;
+
+    // 2. Populate genre tags
+    modalGenres.innerHTML = "";
+    const genres = GenreService.getNames(podcast.genres);
+    genres.forEach((genre) => {
+      const span = document.createElement("span");
+      span.classList.add("modal-genre-tag");
+      span.textContent = genre;
+      modalGenres.appendChild(span);
+    });
+
+    // 3. Populate the seasons list
+    modalSeasonsList.innerHTML = "";
+    if (podcastSeasons && podcastSeasons.seasonDetails) {
+      podcastSeasons.seasonDetails.forEach((season) => {
+        const li = document.createElement("li");
+        li.classList.add("season-item");
+        li.innerHTML = `
+          <h4>${season.title}</h4>
+          <p class="episode-count">${season.episodes} episodes</p>
+        `;
+        modalSeasonsList.appendChild(li);
+      });
+    }
+
+  
